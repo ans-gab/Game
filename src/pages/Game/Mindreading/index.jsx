@@ -1,5 +1,5 @@
-import React, { useRef } from 'react'
-import { Space, Button, Swiper } from 'antd-mobile'
+import React, { useRef, useState } from 'react'
+import { Space, Button, Swiper, ProgressBar, Modal } from 'antd-mobile'
 import './index.css'
 // import { SwiperRef } from 'antd-mobile/es/components/swiper'
 const Mindreading = () => {
@@ -25,9 +25,39 @@ const Mindreading = () => {
     // 将subArr数组存入result数组中
     result.push(subArr);
   }
-
+  // 记录当前页数
+  const [pages, setPages] = useState(0);
+  // 使用useState来跟踪用户的点击，并将1或0添加到clicks数组中
+  const [clicks, setClicks] = useState([]);
+  // 存储转换后的十进制数
+  const [decimal, setDecimal] = useState(null);
+  // 处理用户点击按钮的函数
+  const handleClick = (value) => {
+    // 仅在数组长度小于7时添加值
+    if (clicks.length < 7) {
+      setClicks([...clicks, value]);
+    }
+  }
+  // 将二进制数转换为十进制数的函数
+  const binaryToDecimal = (binary) => {
+    let decimal = 0;
+    for (let i = 0; i < binary.length; i++) {
+      decimal += binary[i] * Math.pow(2, binary.length - 1 - i);
+    }
+    return decimal;
+  }
   return (
     <div className='content'>
+      <Space block direction='vertical'>
+        <ProgressBar
+          percent={pages * 100 / 7}
+          text={'已完成' + pages + '/7 页'}
+          text-width='100'
+          style={{
+            '--fill-color': 'var(--adm-color-success)',
+          }}
+        />
+      </Space>
       <Swiper allowTouchMove={false} ref={ref} indicator={() => null} loop >
         {
           result.map((innerArray, index) => (
@@ -40,30 +70,38 @@ const Mindreading = () => {
                   )
                 }
               </ul>
-
             </Swiper.Item>
-
           ))
         }
       </Swiper>
       {/* 添加上一张和下一张按钮 */}
-      <Space>
-        <Button
-          onClick={() => {
-            ref.current?.swipePrev()
-          }}
-        >
-          上一张
+      <Space align='center'>
+        <Button disabled={pages >= 7} onClick={() => {
+          handleClick(1); ref.current?.swipeNext(); setPages(pages + 1);
+        }}>
+          有
         </Button>
-        <Button
-          onClick={() => {
-            ref.current?.swipeNext()
-          }}
-        >
-          下一张
+        <Button disabled={pages >= 7} onClick={() => {
+          handleClick(0); ref.current?.swipeNext(); setPages(pages + 1);
+        }}>
+          没有
+        </Button>
+        <Button onClick={() => {
+          pages >= 7 ? (Modal.show({
+            content: '您猜中的数字为' + binaryToDecimal(clicks),
+            closeOnMaskClick: true,
+          })) : (Modal.show({
+            content: '请选择完毕之后再点击确认',
+            closeOnMaskClick: true,
+          }))
+          pages >= 7 && setPages(0);
+          pages >= 7 && setClicks([]);
+          console.log(clicks, pages);
+        }}>
+          确认
         </Button>
       </Space>
-    </div>
+    </div >
   )
 }
 
