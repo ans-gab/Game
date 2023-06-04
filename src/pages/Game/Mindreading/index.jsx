@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Space, Button, Swiper, ProgressBar, Modal } from 'antd-mobile'
+import { Space, Button, Swiper, ProgressBar, Modal,SearchBar } from 'antd-mobile'
 import './index.css'
 // import { SwiperRef } from 'antd-mobile/es/components/swiper'
 const Mindreading = () => {
@@ -29,8 +29,8 @@ const Mindreading = () => {
   const [pages, setPages] = useState(0);
   // 使用useState来跟踪用户的点击，并将1或0添加到clicks数组中
   const [clicks, setClicks] = useState([]);
-  // 存储转换后的十进制数
-  const [decimal, setDecimal] = useState(null);
+  // 用户输入框输入的值
+  const [inputvalue,setInputvalue] = useState();
   // 处理用户点击按钮的函数
   const handleClick = (value) => {
     // 仅在数组长度小于7时添加值
@@ -48,6 +48,32 @@ const Mindreading = () => {
   }
   return (
     <div className='content'>
+       <SearchBar
+          placeholder='快速查找'
+          showCancelButton
+          style={{
+            '--border-radius': '100px',
+          }}
+          value={inputvalue}
+          onChange={(e)=>{setInputvalue(e)}}
+        />
+
+      <Swiper allowTouchMove={false} ref={ref} indicator={() => null} loop >
+        {
+          result.map((innerArray, index) => (
+            <Swiper.Item key={index}>
+              <ul className='card-content'>
+                {
+                  innerArray.map((item, index) => (
+                    <li className={item == inputvalue ? 'card-item active' : 'card-item'} key={index} >{item}</li>
+                  )
+                  )
+                }
+              </ul>
+            </Swiper.Item>
+          ))
+        }
+      </Swiper>
       <Space block direction='vertical'>
         <ProgressBar
           percent={pages * 100 / 7}
@@ -58,35 +84,19 @@ const Mindreading = () => {
           }}
         />
       </Space>
-      <Swiper allowTouchMove={false} ref={ref} indicator={() => null} loop >
-        {
-          result.map((innerArray, index) => (
-            <Swiper.Item key={index}>
-              <ul className='card-content'>
-                {
-                  innerArray.map((item, index) => (
-                    <li className='card-item' key={index} >{item}</li>
-                  )
-                  )
-                }
-              </ul>
-            </Swiper.Item>
-          ))
-        }
-      </Swiper>
       {/* 添加上一张和下一张按钮 */}
-      <Space align='center'>
-        <Button disabled={pages >= 7} onClick={() => {
+      <Space align='center' className='chooseIs'>
+        <Button style={{width:'100px'}} disabled={pages >= 7} onClick={() => {
           handleClick(1); ref.current?.swipeNext(); setPages(pages + 1);
         }}>
           有
         </Button>
-        <Button disabled={pages >= 7} onClick={() => {
+        <Button style={{width:'100px'}} disabled={pages >= 7} onClick={() => {
           handleClick(0); ref.current?.swipeNext(); setPages(pages + 1);
         }}>
           没有
         </Button>
-        <Button onClick={() => {
+        <Button style={{width:'100px'}} onClick={() => {
           pages >= 7 ? (Modal.show({
             content: '您猜中的数字为' + binaryToDecimal(clicks),
             closeOnMaskClick: true,

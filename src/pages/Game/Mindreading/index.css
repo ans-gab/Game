@@ -2,6 +2,9 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    padding-block-start: 97px;
+    background: url(../../../assets/img/bg1.jpg);
+    background-size: cover;
 }
 
 .card-content {
@@ -18,7 +21,7 @@
 }
 
 .card-item {
-    width: 3.1875rem;
+    width: 13.67%;
     background: white;
     padding: 10px 5px;
     margin: 1px;
@@ -28,7 +31,10 @@
     flex-grow: 0;
     flex-shrink: 0;
 }
-
+.card-item.active {
+    background: #4b4b5a;
+    color: aliceblue;
+}
 /* 如果最后一行是4个元素 */
 .card-item:last-child:nth-child(5n - 1) {
     margin-right: calc(19% + 5% / 4);
@@ -46,4 +52,8 @@
 
 .adm-progress-bar-text {
     width: 80px;
+}
+.chooseIs {
+    width: 100%;
+    justify-content: space-around;
 }
