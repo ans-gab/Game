@@ -1,0 +1,69 @@
+.content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url(../../../assets/img/bg1.jpg);
+  background-size: cover;
+}
+
+.content-sec2 {
+  background: #0b1d8352;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  /* padding-top: 100px; */
+}
+
+.card-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  list-style: none;
+  margin: 0 auto;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-inline: 0;
+  padding: 5px;
+}
+
+.card-item {
+  width: calc((100% - 75px)/6);
+  background: white;
+  padding: 3px 5px;
+  margin: 1px;
+  border-radius: 3px;
+  font-size: 18px;
+  text-align: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.card-item.active {
+  background: #4b4b5a;
+  color: aliceblue;
+}
+
+/* 如果最后一行是4个元素 */
+.card-item:last-child:nth-child(5n - 1) {
+  margin-right: calc(19% + 5% / 4);
+}
+
+/* 如果最后一行是3个元素 */
+.card-content:last-child:nth-child(5n - 2) {
+  margin-right: calc(38% + 10% / 4);
+}
+
+/* 如果最后一行是2个元素 */
+.card-content:last-child:nth-child(5n - 3) {
+  margin-right: calc(57% + 15% / 4);
+}
+
+.adm-progress-bar-text {
+  width: 80px;
+}
+
+.chooseIs {
+  width: 100%;
+  justify-content: space-around;
+}
