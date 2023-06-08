@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button} from 'antd-mobile';
+import { NavLink } from 'react-router-dom';
 import './index.css'
 import duxin from '../../assets/img/icon/duxin.png'
 import name from '../../assets/img/icon/name.png'
@@ -23,9 +24,11 @@ const Home = () => {
       <div className="background">
          <div className="overlay">
         {buttonList.map((item) => (
-            <Button key={item.title} shape='rounded' className='list-item' onClick={() => window.location.href = item.link} >
+          <NavLink to={item.link} key={item.title}>
+            <Button  shape='rounded' className='list-item' >
                  {/* <Space className='tubiao'><img style={{width:50}} src={item.tubiao} alt="myIcon" /></Space> */}
                  {item.title}</Button>
+          </NavLink>
         ))}
         </div>
       </div>
